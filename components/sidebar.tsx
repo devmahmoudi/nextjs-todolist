@@ -129,9 +129,7 @@ export default function Sidebar() {
                 <Icon className="h-5 w-5" aria-hidden />
                 <span
                   className={`overflow-hidden transition-all duration-150 ease-in-out ${
-                    collapsed
-                      ? "max-w-0 opacity-0"
-                      : "max-w-[12rem] opacity-100"
+                    collapsed ? "hidden" : "max-w-[12rem] opacity-100"
                   }`}
                 >
                   {item.label}
