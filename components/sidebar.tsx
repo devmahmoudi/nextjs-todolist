@@ -39,39 +39,10 @@ const menuItems = [
 ]
 
 export default function Sidebar() {
-  const { collapsed, collapse } = useSidebar()
+  const { collapsed } = useSidebar()
   const pathname = usePathname()
 
-  // Initialize collapsed state from localStorage (client-side)
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sidebar-collapsed")
-      if (saved !== null && saved === "true") collapse()
-    } catch (e) {
-      // ignore (e.g., SSR or restricted storage)
-    }
-  }, [])
 
-  // Sync collapsed state to a root-level CSS class so layout can adjust
-  // the main content offset using simple CSS selectors.
-  useEffect(() => {
-    const root = document.documentElement
-    if (collapsed) {
-      root.classList.add("sidebar-collapsed")
-    } else {
-      root.classList.remove("sidebar-collapsed")
-    }
-
-    try {
-      localStorage.setItem("sidebar-collapsed", collapsed ? "true" : "false")
-    } catch (e) {
-      // ignore
-    }
-
-    return () => {
-      root.classList.remove("sidebar-collapsed")
-    }
-  }, [collapsed])
   return (
     <>
       {/* Desktop Sidebar */}

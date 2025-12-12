@@ -17,17 +17,16 @@ export const SidebarProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [collapsed, setCollapsed] = useState(false)
+  /**
+   * Collapsed state
+   */
+  const [collapsed, setCollapsed] = useState<boolean>(
+    localStorage.getItem("sidebar-collapsed") == "true" ? true : false
+  )
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("sidebar-collapsed")
-      if (saved !== null) setCollapsed(saved === "true")
-    } catch (e) {
-      // ignore (SSR / restricted storage)
-    }
-  }, [])
-
+  /**
+   * Add prepare sidebar collapse classname according current state
+   */
   useEffect(() => {
     const root = document.documentElement
     if (collapsed) {
@@ -36,28 +35,41 @@ export const SidebarProvider = ({
       root.classList.remove("sidebar-collapsed")
     }
 
-    try {
-      localStorage.setItem("sidebar-collapsed", collapsed ? "true" : "false")
-    } catch (e) {
-      // ignore
-    }
-
     return () => {
       root.classList.remove("sidebar-collapsed")
     }
   }, [collapsed])
 
+  /**
+   * Context value
+   */
   const value: SidebarContextType = {
     collapsed,
-    collapse: () => setCollapsed(true),
-    expand: () => setCollapsed(false),
-    toggle: () => setCollapsed((s) => !s),
+    collapse: () => {
+      setCollapsed(true)
+
+      localStorage.setItem("sidebar-collapsed", "true")
+    },
+    expand: () => {
+      setCollapsed(false)
+
+      localStorage.setItem("sidebar-collapsed", "false")
+    },
+    toggle: () => {
+      localStorage.setItem("sidebar-collapsed", collapsed ? "false" : "true")
+
+      setCollapsed((s) => !s)
+    },
     setCollapsed,
   }
 
   return React.createElement(SidebarContext.Provider, { value }, children)
 }
 
+/**
+ * Hook
+ * @returns SidebarContextType
+ */
 export const useSidebar = () => {
   const ctx = useContext(SidebarContext)
   if (!ctx) throw new Error("useSidebar must be used within SidebarProvider")
