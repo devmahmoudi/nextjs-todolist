@@ -79,3 +79,21 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+@layer components {
+  .main-content {
+    transition: margin-left 0.3s ease;
+    margin-left: 0; /* default for mobile */
+  }
+
+  /* Desktop: when sidebar is expanded the content should be offset 16rem (w-64) */
+  @media (min-width: 768px) {
+    html:not(.sidebar-collapsed) .main-content {
+      margin-left: 16rem; /* 64 */
+    }
+    /* Collapsed sidebar: offset 4rem (w-16) */
+    html.sidebar-collapsed .main-content {
+      margin-left: 4rem; /* 16 */
+    }
+  }
+}
