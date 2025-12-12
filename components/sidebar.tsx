@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSidebar } from "@/contexts/sidebar-context"
 import {
   BarChart3,
   ChevronLeft,
@@ -15,7 +16,6 @@ import {
   X,
 } from "lucide-react"
 
-import { SidebarCollapseEvent } from "@/types/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -39,32 +39,17 @@ const menuItems = [
 ]
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false)
+  const { collapsed, collapse } = useSidebar()
   const pathname = usePathname()
 
   // Initialize collapsed state from localStorage (client-side)
   useEffect(() => {
     try {
       const saved = localStorage.getItem("sidebar-collapsed")
-      if (saved !== null) setCollapsed(saved === "true")
+      if (saved !== null && saved === "true") collapse()
     } catch (e) {
       // ignore (e.g., SSR or restricted storage)
     }
-  }, [])
-
-  /**
-   * Listen to global events for collapse and de-collapse sidebar
-   */
-  useEffect(() => {
-    const listener = (event: Event) => {
-      const e = event as SidebarCollapseEvent
-
-      setCollapsed(e.detail.collapsed)
-    }
-
-    window.addEventListener("sidebar-collapse-change", listener)
-
-    return () => window.removeEventListener("sidebar-collapse-change", listener)
   }, [])
 
   // Sync collapsed state to a root-level CSS class so layout can adjust

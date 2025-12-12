@@ -1,5 +1,6 @@
 "use client"
 
+import { useSidebar } from "@/contexts/sidebar-context"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { Button } from "./ui/button"
@@ -9,22 +10,22 @@ import { Button } from "./ui/button"
  */
 const SidebarCollapseToggle = ({ type }: { type: "collapse" | "expand" }) => {
   /**
-   * Toggle sidebar collapse state consider type prop
+   * Use sidebar context
    */
-  const toggle = () => {
-    window.dispatchEvent(
-      new CustomEvent("sidebar-collapse-change", {
-        detail: { collapsed: type == "collapse" },
-      })
-    )
-  }
+  const { collapsed, collapse, expand } = useSidebar()
+
+  /**
+   * Prevent show if type is equal to current state
+   */
+  if ((type == "collapse" && collapsed) || (type == "expand" && !collapsed))
+    return null
 
   return (
     <Button variant="ghost" size="icon">
       {type == "collapse" ? (
-        <ChevronLeft onClick={toggle} />
+        <ChevronLeft onClick={collapse} />
       ) : (
-        <ChevronRight onClick={toggle} />
+        <ChevronRight onClick={expand} />
       )}
     </Button>
   )

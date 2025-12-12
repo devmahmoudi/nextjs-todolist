@@ -1,5 +1,6 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
+import { SidebarProvider } from "@/contexts/sidebar-context"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
@@ -42,13 +43,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="relative flex min-h-screen flex-col">
-              <Sidebar />
-              <main className="main-content flex-1">
-                <SiteHeader />
-                {children}
-              </main>
-            </div>
+            <SidebarProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <Sidebar />
+                <main className="main-content flex-1">
+                  <SiteHeader />
+                  {children}
+                </main>
+              </div>
+            </SidebarProvider>
             <TailwindIndicator />
           </ThemeProvider>
         </body>
