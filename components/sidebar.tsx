@@ -73,7 +73,7 @@ export default function Sidebar() {
     <>
       {/* Desktop Sidebar */}
       <div
-        className={`hidden md:flex fixed left-0 top-16 bottom-0 border-r bg-background transition-all duration-300 ${
+        className={`hidden md:flex fixed left-0 top-[1px] bottom-0 border-r bg-background transition-all duration-300 ${
           collapsed ? "w-16" : "w-64"
         } flex-col`}
       >
@@ -129,7 +129,9 @@ export default function Sidebar() {
                 <Icon className="h-5 w-5" aria-hidden />
                 <span
                   className={`overflow-hidden transition-all duration-150 ease-in-out ${
-                    collapsed ? "max-w-0 opacity-0" : "max-w-[12rem] opacity-100"
+                    collapsed
+                      ? "max-w-0 opacity-0"
+                      : "max-w-[12rem] opacity-100"
                   }`}
                 >
                   {item.label}
