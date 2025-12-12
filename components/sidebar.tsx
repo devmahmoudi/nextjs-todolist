@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react"
 
+import { SidebarCollapseEvent } from "@/types/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +27,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
+import SidebarCollapseToggle from "./sidebar-collapse-toggle"
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -47,6 +50,21 @@ export default function Sidebar() {
     } catch (e) {
       // ignore (e.g., SSR or restricted storage)
     }
+  }, [])
+
+  /**
+   * Listen to global events for collapse and de-collapse sidebar
+   */
+  useEffect(() => {
+    const listener = (event: Event) => {
+      const e = event as SidebarCollapseEvent
+
+      setCollapsed(e.detail.collapsed)
+    }
+
+    window.addEventListener("sidebar-collapse-change", listener)
+
+    return () => window.removeEventListener("sidebar-collapse-change", listener)
   }, [])
 
   // Sync collapsed state to a root-level CSS class so layout can adjust
@@ -77,7 +95,11 @@ export default function Sidebar() {
           collapsed ? "w-16" : "w-64"
         } flex-col`}
       >
-        <div className="flex h-16 items-center justify-between border-b px-4">
+        <div
+          className={`flex h-16 items-center justify-between border-b ${
+            collapsed ? "pl-5" : "px-4"
+          }`}
+        >
           <Link
             href="/dashboard"
             className={`flex items-center gap-2 font-semibold ${
@@ -95,20 +117,7 @@ export default function Sidebar() {
               Acme Dashboard
             </span>
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-            className="ml-auto"
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            aria-expanded={!collapsed}
-          >
-            <ChevronLeft
-              className={`h-4 w-4 transition-transform ${
-                collapsed ? "rotate-180" : ""
-              }`}
-            />
-          </Button>
+          <SidebarCollapseToggle type="collapse" />
         </div>
 
         <nav className="flex-1 space-y-1 p-2">

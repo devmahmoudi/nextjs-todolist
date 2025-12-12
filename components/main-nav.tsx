@@ -6,6 +6,8 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 
+import SidebarCollapseToggle from "./sidebar-collapse-toggle"
+
 interface MainNavProps {
   items?: NavItem[]
 }
@@ -13,6 +15,7 @@ interface MainNavProps {
 export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10 pl-[70px] md:pl-3 pt-2">
+      <SidebarCollapseToggle type="expand" />
       <Link href="/" className="flex items-center space-x-2">
         <Icons.logo className="h-6 w-6" />
         <span className="inline-block font-bold">{siteConfig.name}</span>
