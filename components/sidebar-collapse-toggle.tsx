@@ -21,11 +21,11 @@ const SidebarCollapseToggle = ({ type }: { type: "collapse" | "expand" }) => {
     return null
 
   return (
-    <Button variant="ghost" size="icon">
-      {type == "collapse" ? (
-        <ChevronLeft onClick={collapse} />
+    <Button variant="ghost" size="icon" onClick={type === 'collapse' ? collapse : expand}>
+      {type === "collapse" ? (
+        <ChevronLeft />
       ) : (
-        <ChevronRight onClick={expand} />
+        <ChevronRight />
       )}
     </Button>
   )
