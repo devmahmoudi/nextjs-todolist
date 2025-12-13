@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSidebar } from "@/contexts/sidebar-context"
+import { groups } from "@/data"
 import {
   BarChart3,
   ChevronLeft,
@@ -42,7 +43,6 @@ const menuItems = [
 export default function Sidebar() {
   const { collapsed } = useSidebar()
   const pathname = usePathname()
-
 
   return (
     <>
@@ -103,11 +103,13 @@ export default function Sidebar() {
               </Link>
             )
           })} */}
-          <SidebarInputOption
-            label="React Questions"
-            onEditComplete={() => {}}
-            onRemove={() => {}}
-          />
+          {groups.map((g) => (
+            <SidebarInputOption
+              label={g.name}
+              onEditComplete={() => {}}
+              onRemove={() => {}}
+            />
+          ))}
         </nav>
 
         <div className="border-t p-4">
