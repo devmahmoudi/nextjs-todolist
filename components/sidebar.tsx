@@ -29,6 +29,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import SidebarCollapseToggle from "./sidebar-collapse-toggle"
+import { SidebarInputOption } from "./sidebar-option-input"
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -77,7 +78,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex-1 space-y-1 p-2">
-          {menuItems.map((item) => {
+          {/* {menuItems.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
             return (
@@ -101,7 +102,12 @@ export default function Sidebar() {
                 </span>
               </Link>
             )
-          })}
+          })} */}
+          <SidebarInputOption
+            label="React Questions"
+            onEditComplete={() => {}}
+            onRemove={() => {}}
+          />
         </nav>
 
         <div className="border-t p-4">
