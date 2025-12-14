@@ -1,6 +1,7 @@
 import { groups } from "@/data"
 import { Button } from "@/components/ui/button"
 import { SidebarInputOption } from "../sidebar-option-input"
+import { CreateGroupDialog } from "../group/create-group-dialog"
 
 const SidebarBody = () => {
   return (
@@ -15,9 +16,10 @@ const SidebarBody = () => {
         ))}
       </nav>
 
-      <div className="p-3">
-        <Button className="w-full">Add New Group</Button>
+      <div className="py-3 px-2">
+        <CreateGroupDialog onCreateGroup={() => {}}/>
       </div>
+      
     </>
   )
 }
