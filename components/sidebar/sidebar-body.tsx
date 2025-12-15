@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { CreateGroupDialog } from "../group/create-group-dialog"
 import { GroupBadge } from "../group/group-badge"
 import { SidebarInputOption } from "../sidebar-option-input"
+import { Plus } from "lucide-react"
 
 const SidebarBody = () => {
   const { collapsed } = useSidebar()
@@ -31,9 +32,7 @@ const SidebarBody = () => {
             {/* SidebarInputOption - Hidden when collapsed */}
             {!collapsed && (
               <div className="pl-10">
-                <SidebarInputOption
-                  label={g.name}
-                />
+                <SidebarInputOption label={g.name} />
               </div>
             )}
           </div>
@@ -41,7 +40,15 @@ const SidebarBody = () => {
       </nav>
 
       <div className="py-3 px-2">
-        <CreateGroupDialog onCreateGroup={() => {}} />
+        <CreateGroupDialog
+          onCreateGroup={() => {}}
+          trigger={
+            <Button title={collapsed ? "Add New Group" : undefined} variant="ghost" size="sm" className="w-full justify-center py-5">
+              <Plus className=""/>
+              <span className={collapsed ? 'hidden' : 'pl-2'}>Add New Group</span>
+            </Button>
+          }
+        />
       </div>
     </>
   )
