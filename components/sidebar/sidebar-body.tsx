@@ -1,13 +1,13 @@
 import { group } from "console"
 import { useSidebar } from "@/contexts/sidebar-context"
 import { groups } from "@/data"
+import { Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
 import { CreateGroupDialog } from "../group/create-group-dialog"
 import { GroupBadge } from "../group/group-badge"
 import { SidebarInputOption } from "../sidebar-input-option"
-import { Plus } from "lucide-react"
 
 const SidebarBody = () => {
   const { collapsed } = useSidebar()
@@ -20,11 +20,11 @@ const SidebarBody = () => {
             {/* Badge - Always visible */}
             <GroupBadge
               group={g}
-              className={
+              className={`cursor-pointer ${
                 collapsed
                   ? "h-10 w-10 mx-auto"
                   : "absolute left-1 top-1/2 -translate-y-1/2"
-              }
+              }`}
               showLabel={false}
               size={collapsed ? "full" : "md"}
             />
@@ -43,9 +43,16 @@ const SidebarBody = () => {
         <CreateGroupDialog
           onCreateGroup={() => {}}
           trigger={
-            <Button title={collapsed ? "Add New Group" : undefined} variant="ghost" size="sm" className="w-full justify-center py-5">
-              <Plus className=""/>
-              <span className={collapsed ? 'hidden' : 'pl-2'}>Add New Group</span>
+            <Button
+              title={collapsed ? "Add New Group" : undefined}
+              variant="ghost"
+              size="sm"
+              className="w-full justify-center py-5"
+            >
+              <Plus className="" />
+              <span className={collapsed ? "hidden" : "pl-2"}>
+                Add New Group
+              </span>
             </Button>
           }
         />
