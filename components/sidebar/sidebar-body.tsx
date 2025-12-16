@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 import { CreateGroupDialog } from "../group/create-group-dialog"
 import { GroupBadge } from "../group/group-badge"
-import { SidebarInputOption } from "../sidebar-option-input"
+import { SidebarInputOption } from "../sidebar-input-option"
 import { Plus } from "lucide-react"
 
 const SidebarBody = () => {
@@ -32,7 +32,7 @@ const SidebarBody = () => {
             {/* SidebarInputOption - Hidden when collapsed */}
             {!collapsed && (
               <div className="pl-10">
-                <SidebarInputOption label={g.name} />
+                <SidebarInputOption group={g} />
               </div>
             )}
           </div>

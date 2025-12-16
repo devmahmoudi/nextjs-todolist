@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
-import { AlertTriangle, Edit, MoreVertical, Trash2 } from "lucide-react"
+import {
+  AlertTriangle,
+  Edit,
+  MoreVertical,
+  TextCursorInput,
+  Trash2,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,11 +25,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 
+import { EditGroupDialog } from "./group/edit-group-dialog"
+
 interface SidebarInputOptionProps {
   /** Initial value for the input */
   defaultValue?: string
   /** Label to display when not editing */
-  label: string
+  group: Group
   /** Callback when editing is complete */
   onEditComplete?: (newValue: string) => void
   /** Callback when remove is confirmed */
@@ -38,7 +46,7 @@ interface SidebarInputOptionProps {
 
 export function SidebarInputOption({
   defaultValue = "",
-  label,
+  group,
   onEditComplete,
   onRemove,
   className,
@@ -62,7 +70,7 @@ export function SidebarInputOption({
 
   const handleEditClick = () => {
     setIsEditing(true)
-    setValue(label) // Start with current label
+    setValue(group.name)
   }
 
   const handleSave = () => {
@@ -74,7 +82,7 @@ export function SidebarInputOption({
 
   const handleCancel = () => {
     setIsEditing(false)
-    setValue(label)
+    setValue(group.name)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -160,7 +168,7 @@ export function SidebarInputOption({
         ) : (
           // Normal display state
           <>
-            <span className="flex-1 text-sm truncate">{label}</span>
+            <span className="flex-1 text-sm truncate">{group.name}</span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -175,8 +183,19 @@ export function SidebarInputOption({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-36">
                 <DropdownMenuItem onClick={handleEditClick}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
+                  <TextCursorInput className="mr-2 h-4 w-4" />
+                  Rename
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+                  <EditGroupDialog
+                    group={group}
+                    trigger={
+                      <Button variant={"ghost"} className="w-full justify-start p-0">
+                        <Edit className="mr-4 h-4 w-4" />
+                        <span>Edit</span>
+                      </Button>
+                    }
+                  />
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleDeleteClick}
@@ -206,11 +225,11 @@ export function SidebarInputOption({
             <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
               <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
                 <span className="text-sm font-medium">
-                  {label.charAt(0).toUpperCase()}
+                  {group.name.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div>
-                <p className="font-medium">{label}</p>
+                <p className="font-medium">{group.name}</p>
                 <p className="text-sm text-muted-foreground">
                   This item will be permanently removed
                 </p>
