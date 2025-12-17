@@ -1,28 +1,13 @@
-import { Menu } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
+import { Menu, Plus } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  BarChart3,
-  FileText,
-  LayoutDashboard,
-  Settings,
-  Users,
-} from "lucide-react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
-const menuItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/dashboard/users", label: "Users", icon: Users },
-  { href: "/dashboard/reports", label: "Reports", icon: FileText },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
-]
+import { groups } from "@/data"
+import { GroupBadge } from "../group/group-badge"
+import { SidebarInputOption } from "../sidebar-input-option"
+import { CreateGroupDialog } from "../group/create-group-dialog"
 
-const MobileSidebar = () => {
-  const pathname = usePathname()
-
+const SidebarMobile = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -34,35 +19,54 @@ const MobileSidebar = () => {
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-64 p-0">
+
+      <SheetContent side="left" className="w-72 p-0">
         <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center border-b px-6">
-            <h2 className="text-lg font-semibold">Acme Dashboard</h2>
+          {/* Header */}
+          <div className="flex h-16 items-center border-b px-4">
+            <h2 className="text-lg font-semibold">Groups</h2>
           </div>
-          <nav className="flex-1 space-y-1 p-4">
-            {menuItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
+
+          {/* Body (same logic as SidebarBody, but non-collapsed) */}
+          <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
+            {groups.map((g) => (
+              <div key={g.id} className="relative">
+                {/* Badge */}
+                <GroupBadge
+                  group={g}
+                  className="absolute left-1 top-1/2 -translate-y-1/2"
+                  showLabel={false}
+                  size="md"
+                />
+
+                {/* Input option */}
+                <div className="pl-10">
+                  <SidebarInputOption group={g} />
+                </div>
+              </div>
+            ))}
           </nav>
+
+          {/* Footer */}
+          <div className="border-t p-2">
+            <CreateGroupDialog
+              onCreateGroup={() => {}}
+              trigger={
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start py-5"
+                >
+                  <Plus />
+                  <span className="pl-2">Add New Group</span>
+                </Button>
+              }
+            />
+          </div>
         </div>
       </SheetContent>
     </Sheet>
   )
 }
 
-export default MobileSidebar
+export default SidebarMobile
